@@ -2,11 +2,11 @@ import requests
 import json
 from config import keys
 
-class APIException(Exception):
+class APIException(Exception):        
     pass
 
 
-class CurrencyConverter:
+class CurrencyConverter:                    
     @staticmethod
     def get_price(base, quote, amount):
         try:
@@ -28,7 +28,7 @@ class CurrencyConverter:
             raise APIException(f'Не удалось обработать количество {amount}')
 
         try:
-            r = requests.get(f"https://v6.exchangerate-api.com/v6/21f06fdeca94bec898957a26/latest/{base_key}")
+            r = requests.get(f"https://v6.exchangerate-api.com/v6/21f06fdeca94bec898957a26/latest/{base_key}")     #https://currate.ru/#list API
             r.raise_for_status()
             resp = r.json()
 
