@@ -1,0 +1,51 @@
+from BD.models import User, Author, Post, Comment, Category, PostCategory
+
+# Создание пользователь
+user1=User.objects.create_user('Test1')
+user2=User.objects.create_user('Test2')
+
+# Создание Авторов
+author1=Author.objects.create(user=user1, rating = 0)
+author1=Author.objects.create(user=user2, rating = 0)
+
+# создание категорий
+category1 = Category.objects.create(name='Category1')
+category2 = Category.objects.create(name='Category2')
+category3 = Category.objects.create(name='Category3')
+category4 = Category.objects.create(name='Category4')
+
+# Создание статей и новости
+post1 = Post.objects.create(author=author1, title='Post 1', text='Text 1',rating = 0)
+post2 = Post.objects.create(author=author2, title='Post 2', text='Text 2',rating = 0)
+news1 = Post.objects.create(author=author1, title='News 1', text='Text 3',rating = 0)
+
+# Присваивание категорий
+post1.categories.add(Category.objects.get(name='Category 1'), Category.objects.get(name='Category 2'))
+post2.categories.add(Category.objects.get(name='Category 3'), Category.objects.get(name='Category 4'))
+news1.categories.add(Category.objects.get(name='Category 1'), Category.objects.get(name='Category 3'))
+
+
+# Создание комментов
+Comment.objects.create(user=user1, post=post1, text='Comment 1',rating = 0)
+Comment.objects.create(user=user2, post=post1, text='Comment 2',rating = 0)
+Comment.objects.create(user=user1, post=post2, text='Comment 3',rating = 0)
+Comment.objects.create(user=user2, post=post2, text='Comment 4',rating = 0)
+
+# Лайки и дислайки
+post1.like()
+post1.like()
+post2.dislike()
+post2.dislike()
+
+# Обновление рейтингов пользователей
+author1.update_rating()
+author2.update_rating()
+
+# Вывод лучшей статьи
+best_post = Post.objects.order_by('-rating').first()
+print(best_post.created_at, best_post.author.user.username, best_post.rating, best_post.title, best_post.preview())
+
+# Вывод всех комментариев к лучшей статье
+comments = Comment.objects.filter(post=best_post)
+for comment in comments:
+    print(comment.created, comment.user.username, comment.rating, comment.text)
