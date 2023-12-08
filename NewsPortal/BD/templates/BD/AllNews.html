@@ -1,0 +1,24 @@
+{% extends 'BD/default.html' %}
+{% load Filters %} <!-- Подгрузка Фильтра, Css и наследуемый шаблон-->
+{% load static %}
+
+{% block title %}Новости{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/Main.css' %}">
+<h1>Количество новостей: {{ posts|length }}</h1>
+<div class="post-grid">
+    {% if posts %}
+        {% for post in posts %}
+            <div class="post-card">
+                <p title="{{ post.title }}"><a href="{% url 'Post Details' post.id %}">{{ post.title|censore }}</a></p>
+                <p title="{{ post.text }}"> {{ post.text|slice:":20"|censore }} </p>
+                <h2>{{ post.date|date:"d/m/Y" }}</h2>
+                <h3>{{ post.id }}</h3>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h2>Публикации отсутсвуют</h2>
+    {% endif %}
+</div>
+{% endblock %}

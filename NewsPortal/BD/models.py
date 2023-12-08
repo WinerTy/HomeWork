@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    rating = models.IntegerField(null = True)
+    rating = models.IntegerField(null=True)
 
     def update_rating(self):
         post_rating = self.post_set.aggregate(models.Sum('rating'))['rating__sum'] or 0
@@ -13,7 +13,7 @@ class Author(models.Model):
         self.save()
 
     def __str__(self):
-        return self.user.username
+        return f'Автор:{self.user.username}'
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -55,7 +55,7 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
-    rating = models.IntegerField(default= 0)
+    rating = models.IntegerField(default=0)
 
     def like(self):
         self.rating += 1
